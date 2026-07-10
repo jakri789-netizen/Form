@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ใบลางาน — Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+  :root{
+    --navy:#1B2A4A;
+    --navy-deep:#101B33;
+    --cream:#F7F5EF;
+    --card:#FFFFFF;
+    --brass:#B08D57;
+    --brass-deep:#8C6C3E;
+    --slate:#64748B;
+    --line:#E4E0D6;
+    --danger:#B4432C;
+    --ok:#3F6B4A;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    font-family:'Sarabun', sans-serif;
+    color:var(--navy-deep);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 16px 80px;
+  }
+  header.top{
+    background:var(--navy);
+    color:#fff;
+    padding:36px 16px 46px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header.top::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:6px;
+    background:linear-gradient(90deg, var(--brass), var(--brass-deep));
+  }
+  header.top .eyebrow{
+    letter-spacing:.18em;
+    font-size:12px;
+    text-transform:uppercase;
+    color:#C9B58A;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .liff-user{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,0.08);
+    border-radius:20px;
+    padding:6px 14px 6px 6px;
+    font-size:13px;
+    color:#E8E4D8;
+    margin-top:14px;
+  }
+  .liff-user img{
+    width:24px;height:24px;border-radius:50%;
+  }
+  header.top h1{
+    margin:0;
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:.02em;
+  }
+  header.top p{
+    margin:8px 0 0;
+    color:#B9C2D6;
+    font-size:14px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    margin-top:-28px;
+    box-shadow:0 10px 30px rgba(16,27,51,0.10);
+    overflow:hidden;
+  }
+  .section{
+    padding:26px 26px;
+    border-bottom:1px solid var(--line);
+  }
+  .section:last-child{border-bottom:none;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .section-num{
+    font-family:'Sarabun',sans-serif;
+    font-weight:700;
+    color:var(--brass-deep);
+    font-size:13px;
+    border:1.5px solid var(--brass);
+    border-radius:20px;
+    padding:2px 10px;
+    letter-spacing:.05em;
+  }
+  .section-title{
+    font-size:17px;
+    font-weight:700;
+    color:var(--navy-deep);
+  }
+  .row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .field{
+    flex:1 1 220px;
+    margin-bottom:14px;
+  }
+  .field.full{flex-basis:100%;}
+  label{
+    display:block;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--slate);
+    margin-bottom:6px;
+  }
+  label .req{color:var(--danger);}
+  input[type=text],
+  input[type=date],
+  input[type=tel],
+  input[type=number],
+  select,
+  textarea{
+    width:100%;
+    padding:10px 12px;
+    font-family:'Sarabun',sans-serif;
+    font-size:15px;
+    color:var(--navy-deep);
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:#FCFBF8;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  textarea{resize:vertical; min-height:64px;}
+  input:focus, select:focus, textarea:focus{
+    outline:none;
+    border-color:var(--brass);
+    box-shadow:0 0 0 3px rgba(176,141,87,0.18);
+    background:#fff;
+  }
+  .leave-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:560px){ .leave-grid{grid-template-columns:1fr;} }
+  .leave-card{
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    padding:12px 14px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+    position:relative;
+  }
+  .leave-card input{position:absolute; opacity:0; pointer-events:none;}
+  .leave-card .label-text{
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--navy-deep);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .leave-card .dot{
+    width:15px;height:15px;
+    border-radius:50%;
+    border:2px solid var(--slate);
+    flex:0 0 auto;
+    position:relative;
+  }
+  .leave-card input:checked ~ .label-text .dot{
+    border-color:var(--brass-deep);
+    background:var(--brass-deep);
+    box-shadow:inset 0 0 0 3px #fff;
+  }
+  .leave-card:has(input:checked){
+    border-color:var(--brass);
+    background:#FBF7EF;
+  }
+  .sub-fields{
+    margin-top:14px;
+    padding:14px;
+    background:#FAF9F5;
+    border-radius:8px;
+    border:1px dashed var(--line);
+    display:none;
+  }
+  .sub-fields.show{display:block;}
+  .hint{
+    font-size:12.5px;
+    color:var(--slate);
+    margin-top:4px;
+  }
+  .switch-row{
+    display:flex;
+    gap:18px;
+    margin-top:6px;
+    font-size:14px;
+    color:var(--navy-deep);
+  }
+  .switch-row label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-weight:500;
+    color:var(--navy-deep);
+    margin:0;
+  }
+  .switch-row input{width:auto;}
+  .total-days{
+    background:var(--navy);
+    color:#fff;
+    border-radius:8px;
+    padding:12px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:600;
+    margin-top:4px;
+  }
+  .total-days span.num{
+    font-size:20px;
+    color:#E8D9BC;
+  }
+  .submit-bar{
+    padding:26px;
+    background:#FCFBF8;
+  }
+  button.submit{
+    width:100%;
+    padding:15px;
+    font-family:'Sarabun',sans-serif;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:#fff;
+    background:var(--navy);
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .15s, transform .1s;
+  }
+  button.submit:hover{background:var(--navy-deep);}
+  button.submit:active{transform:scale(0.99);}
+  button.submit:disabled{background:var(--slate); cursor:wait;}
+  .status{
+    margin-top:14px;
+    padding:12px 14px;
+    border-radius:8px;
+    font-size:14px;
+    display:none;
+  }
+  .status.show{display:block;}
+  .status.ok{background:#E9F1EB; color:var(--ok); border:1px solid #C3DACB;}
+  .status.err{background:#F7E7E2; color:var(--danger); border:1px solid #EBC5B9;}
+  .footnote{
+    text-align:center;
+    font-size:12px;
+    color:var(--slate);
+    margin-top:18px;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">GLOBAL — ระบบสารสนเทศบุคคล</div>
+  <h1>ใบลางาน</h1>
+  <p>กรอกแบบฟอร์มด้านล่าง ระบบจะจัดทำใบลาเป็น PDF และส่งกลับให้ทาง LINE นี้โดยอัตโนมัติ</p>
+  <div class="liff-user" id="liffUserChip" style="display:none;">
+    <img id="liffUserImg" src="" alt="">
+    <span id="liffUserName"></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <form id="leaveForm">
+
+      <!-- Section 1: ข้อมูลเบื้องต้น -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-num">01</span>
+          <span class="section-title">ข้อมูลใบลา</span>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>วันที่ยื่นใบลา <span class="req">*</span></label>
+            <input type="date" name="วันที่ยื่นใบลา" required>
+          </div>
+          <div class="field full">
+            <label>เรื่อง <span class="req">*</span></label>
+            <input type="text" name="เรื่อง" placeholder="เช่น ขอลาป่วย" required>
+          </div>
+          <div class="field full">
+            <label>เรียน</label>
+            <input type="text" name="เรียน" value="กรรมการผู้จัดการบริษัท / ผู้บังคับบัญชาขั้นต้น">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: ข้อมูลผู้ลา -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-num">02</span>
+          <span class="section-title">ข้อมูลผู้ขอลา</span>
+        </div>
+        <div class="row">
+          <div class="field" style="flex-basis:140px;">
+            <label>คำนำหน้า <span class="req">*</span></label>
+            <select name="คำนำหน้า" required>
+              <option value="">เลือก</option>
+              <option>นาย</option>
+              <option>นาง</option>
+              <option>นางสาว</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ชื่อ-นามสกุล <span class="req">*</span></label>
+            <input type="text" name="ชื่อ-นามสกุล" required>
+          </div>
+          <div class="field">
+            <label>ตำแหน่ง <span class="req">*</span></label>
+            <input type="text" name="ตำแหน่ง" required>
+          </div>
+          <div class="field">
+            <label>แผนก/ฝ่าย <span class="req">*</span></label>
+            <input type="text" name="แผนก/ฝ่าย" required>
+          </div>
+          <div class="field" style="flex-basis:140px;">
+            <label>อายุงาน (ปี)</label>
+            <input type="number" min="0" name="อายุงาน_ปี">
+          </div>
+          <div class="field" style="flex-basis:140px;">
+            <label>อายุงาน (เดือน)</label>
+            <input type="number" min="0" max="11" name="อายุงาน_เดือน">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: ประเภทการลา -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-num">03</span>
+          <span class="section-title">ประเภทการลา</span>
+        </div>
+        <div class="leave-grid" id="leaveTypeGrid">
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลาป่วย" required>
+            <span class="label-text"><span class="dot"></span> ลาป่วย</span>
+          </label>
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลากิจส่วนตัว">
+            <span class="label-text"><span class="dot"></span> ลากิจส่วนตัว</span>
+          </label>
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลาคลอดบุตร">
+            <span class="label-text"><span class="dot"></span> ลาคลอดบุตร</span>
+          </label>
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลากิจเพื่อเลี้ยงดูบุตร">
+            <span class="label-text"><span class="dot"></span> ลากิจเพื่อเลี้ยงดูบุตร</span>
+          </label>
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลาไปช่วยภริยาที่คลอดบุตร">
+            <span class="label-text"><span class="dot"></span> ลาไปช่วยภริยาที่คลอดบุตร</span>
+          </label>
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลาพักผ่อนประจำปี">
+            <span class="label-text"><span class="dot"></span> ลาพักผ่อนประจำปี</span>
+          </label>
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลาอุปสมบท / ไปประกอบพิธีฮัจย์">
+            <span class="label-text"><span class="dot"></span> ลาอุปสมบท / ไปประกอบพิธีฮัจย์</span>
+          </label>
+          <label class="leave-card">
+            <input type="radio" name="ประเภทการลา" value="ลาไปถือศีลปฏิบัติธรรม">
+            <span class="label-text"><span class="dot"></span> ลาไปถือศีลปฏิบัติธรรม</span>
+          </label>
+        </div>
+
+        <!-- Sub fields per leave type -->
+        <div class="sub-fields" data-for="ลาป่วย">
+          <div class="field full">
+            <label>เนื่องจาก</label>
+            <textarea name="ลาป่วย_เหตุผล"></textarea>
+          </div>
+        </div>
+
+        <div class="sub-fields" data-for="ลากิจส่วนตัว">
+          <div class="field full">
+            <label>เนื่องจาก</label>
+            <textarea name="ลากิจส่วนตัว_เหตุผล"></textarea>
+          </div>
+        </div>
+
+        <div class="sub-fields" data-for="ลาคลอดบุตร">
+          <div class="field full">
+            <label>คลอดบุตรเมื่อวันที่</label>
+            <input type="date" name="ลาคลอดบุตร_วันที่">
+          </div>
+        </div>
+
+        <div class="sub-fields" data-for="ลากิจเพื่อเลี้ยงดูบุตร">
+          <div class="field full">
+            <label>เนื่องจาก</label>
+            <textarea name="ลากิจเพื่อเลี้ยงดูบุตร_เหตุผล"></textarea>
+          </div>
+        </div>
+
+        <div class="sub-fields" data-for="ลาไปช่วยภริยาที่คลอดบุตร">
+          <div class="field full">
+            <label>ภริยาคลอดบุตรเมื่อวันที่</label>
+            <input type="date" name="ลาไปช่วยภริยาที่คลอดบุตร_วันที่">
+          </div>
+        </div>
+
+        <div class="sub-fields" data-for="ลาพักผ่อนประจำปี">
+          <div class="row">
+            <div class="field">
+              <label>วันลาสะสม (วันทำการ)</label>
+              <input type="number" min="0" step="0.5" name="ลาพักผ่อน_สะสม">
+            </div>
+            <div class="field">
+              <label>สิทธิปีนี้ (วันทำการ)</label>
+              <input type="number" min="0" step="0.5" name="ลาพักผ่อน_สิทธิปีนี้">
+            </div>
+          </div>
+        </div>
+
+        <div class="sub-fields" data-for="ลาอุปสมบท / ไปประกอบพิธีฮัจย์">
+          <div class="field full">
+            <label>ณ สถานที่</label>
+            <input type="text" name="อุปสมบท_สถานที่">
+          </div>
+          <div class="switch-row">
+            <label><input type="radio" name="อุปสมบท_เคย" value="เคย"> เคยประกอบพิธีดังกล่าวมาก่อน</label>
+            <label><input type="radio" name="อุปสมบท_เคย" value="ไม่เคย"> ไม่เคย</label>
+          </div>
+        </div>
+
+        <div class="sub-fields" data-for="ลาไปถือศีลปฏิบัติธรรม">
+          <div class="field full">
+            <label>สถานที่ปฏิบัติธรรม</label>
+            <input type="text" name="ถือศีล_สถานที่">
+          </div>
+          <div class="switch-row">
+            <label><input type="radio" name="ถือศีล_เคย" value="เคย"> เคยประกอบพิธีดังกล่าวมาก่อน</label>
+            <label><input type="radio" name="ถือศีล_เคย" value="ไม่เคย"> ไม่เคย</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: ช่วงวันที่ลา -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-num">04</span>
+          <span class="section-title">ช่วงวันที่ขอลา</span>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>ตั้งแต่วันที่ <span class="req">*</span></label>
+            <input type="date" name="วันที่เริ่มลา" id="startDate" required>
+          </div>
+          <div class="field">
+            <label>ถึงวันที่ <span class="req">*</span></label>
+            <input type="date" name="วันที่สิ้นสุดลา" id="endDate" required>
+          </div>
+        </div>
+        <div class="total-days">
+          <span>รวมจำนวนวัน</span>
+          <span><span class="num" id="totalDaysNum">0</span> วัน</span>
+        </div>
+        <input type="hidden" name="รวมจำนวนวัน" id="totalDaysHidden" value="0">
+      </div>
+
+      <!-- Section 5: การติดต่อระหว่างลา -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-num">05</span>
+          <span class="section-title">ช่องทางติดต่อระหว่างลา</span>
+        </div>
+        <div class="field full">
+          <label>ที่อยู่ / เบอร์โทรศัพท์ที่สามารถติดต่อได้</label>
+          <input type="text" name="ช่องทางติดต่อ" placeholder="เช่น 08x-xxx-xxxx หรือที่อยู่ระหว่างลา">
+        </div>
+      </div>
+
+      <input type="hidden" name="lineUserId" id="lineUserId">
+      <input type="hidden" name="lineDisplayName" id="lineDisplayName">
+
+      <div class="submit-bar">
+        <button type="submit" class="submit" id="submitBtn">ส่งใบลางาน</button>
+        <div class="status" id="statusBox"></div>
+      </div>
+
+    </form>
+  </div>
+  <div class="footnote">ข้อมูลของท่านจะถูกส่งตรงไปยัง Google Sheet ของฝ่ายบุคคล</div>
+</div>
+
+<!-- hidden iframe target so the form POST doesn't navigate away or hit CORS -->
+<iframe name="hidden_target" style="display:none"></iframe>
+
+<script>
+  // ---- CONFIGURE THESE ----
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzr-NThIs_5kSS2AiitkBi6xi1eYQLVRKFqhX2zk4ewzx-6-RtSVy1R_AXt0avmZs1H/exec";
+  const LIFF_ID = "2010653646-qUfufjbs";
+  // --------------------------
+
+  // ---- LIFF: log in and pull the LINE profile so we know who to send the PDF back to ----
+  liff.init({ liffId: LIFF_ID })
+    .then(() => {
+      if (!liff.isLoggedIn()) { liff.login(); return; }
+      return liff.getProfile();
+    })
+    .then(profile => {
+      if (!profile) return;
+      document.getElementById('lineUserId').value = profile.userId;
+      document.getElementById('lineDisplayName').value = profile.displayName;
+      const chip = document.getElementById('liffUserChip');
+      document.getElementById('liffUserImg').src = profile.pictureUrl || '';
+      document.getElementById('liffUserName').textContent = profile.displayName;
+      chip.style.display = 'inline-flex';
+    })
+    .catch(err => console.error('LIFF init error:', err));
+
+  const form = document.getElementById('leaveForm');
+  form.action = SCRIPT_URL;
+  form.method = "POST";
+  form.target = "hidden_target";
+  form.enctype = "application/x-www-form-urlencoded";
+
+  // Toggle sub-fields based on selected leave type
+  const subFieldBlocks = document.querySelectorAll('.sub-fields');
+  document.querySelectorAll('input[name="ประเภทการลา"]').forEach(radio=>{
+    radio.addEventListener('change', ()=>{
+      subFieldBlocks.forEach(block=>{
+        block.classList.toggle('show', block.dataset.for === radio.value);
+      });
+    });
+  });
+
+  // Auto calculate total days
+  const startInput = document.getElementById('startDate');
+  const endInput = document.getElementById('endDate');
+  const totalDaysNum = document.getElementById('totalDaysNum');
+  const totalDaysHidden = document.getElementById('totalDaysHidden');
+
+  function calcDays(){
+    if(startInput.value && endInput.value){
+      const start = new Date(startInput.value);
+      const end = new Date(endInput.value);
+      const diff = Math.round((end - start) / (1000*60*60*24)) + 1;
+      const days = diff > 0 ? diff : 0;
+      totalDaysNum.textContent = days;
+      totalDaysHidden.value = days;
+    } else {
+      totalDaysNum.textContent = 0;
+      totalDaysHidden.value = 0;
+    }
+  }
+  startInput.addEventListener('change', calcDays);
+  endInput.addEventListener('change', calcDays);
+
+  // Submit handling
+  const submitBtn = document.getElementById('submitBtn');
+  const statusBox = document.getElementById('statusBox');
+
+  form.addEventListener('submit', function(){
+    if(SCRIPT_URL.includes("PASTE_YOUR")){
+      statusBox.className = "status show err";
+      statusBox.textContent = "ยังไม่ได้ตั้งค่า Google Apps Script URL — โปรดดูคำแนะนำการติดตั้ง";
+      return false;
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = "กำลังส่งข้อมูล...";
+    statusBox.className = "status";
+
+    // We can't read the iframe response due to cross-origin, so we optimistically
+    // confirm submission after a short delay. The server takes a few extra
+    // seconds to fill the PDF and push it back via LINE.
+    setTimeout(()=>{
+      submitBtn.disabled = false;
+      submitBtn.textContent = "ส่งใบลางาน";
+      statusBox.className = "status show ok";
+      statusBox.textContent = "ส่งใบลางานเรียบร้อยแล้ว ✓ ระบบกำลังจัดทำไฟล์ PDF และจะส่งกลับมาทางแชท LINE นี้ในอีกสักครู่";
+      form.reset();
+      subFieldBlocks.forEach(b=>b.classList.remove('show'));
+      totalDaysNum.textContent = 0;
+      totalDaysHidden.value = 0;
+      if (liff.isInClient && liff.isInClient()) {
+        setTimeout(()=>{ liff.closeWindow(); }, 3500);
+      }
+    }, 1200);
+  });
+</script>
+
+</body>
+</html>
